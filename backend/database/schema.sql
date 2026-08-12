@@ -1,0 +1,45 @@
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  phone TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  region TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS crops (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  crop_name TEXT NOT NULL,
+  sowing_date TEXT,
+  area REAL,
+  season TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS expenses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  crop_id INTEGER NOT NULL,
+  type TEXT NOT NULL,
+  amount REAL NOT NULL,
+  date TEXT DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (crop_id) REFERENCES crops(id)
+);
+
+CREATE TABLE IF NOT EXISTS sales (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  crop_id INTEGER NOT NULL,
+  quantity REAL,
+  rate REAL,
+  mandi_name TEXT,
+  date TEXT DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (crop_id) REFERENCES crops(id)
+);
+
+CREATE TABLE IF NOT EXISTS crop_lookup (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  region TEXT,
+  season TEXT,
+  soil_type TEXT,
+  recommended_crops TEXT
+);
