@@ -1,6 +1,6 @@
-const { createCrop, getCropsByUser, getCropById } = require('../models/Crop');
-const { addExpense, getExpensesByCrop } = require('../models/Expense');
-const { addSale, getSalesByCrop } = require('../models/Sale');
+const { createCrop, getCropsByUser, getCropById, deleteCrop } = require('../models/Crop');
+const { addExpense, getExpensesByCrop, deleteExpense } = require('../models/Expense');
+const { addSale, getSalesByCrop, deleteSale } = require('../models/Sale');
 
 // ---- CROPS ----
 function addCrop(req, res) {
@@ -73,5 +73,27 @@ function getCropSummary(req, res) {
     });
   });
 }
+function deleteExpenseEntry(req, res) {
+  deleteExpense(req.params.id, (err, changes) => {
+    if (err) return res.status(500).json({ message: 'Error deleting expense' });
+    if (changes === 0) return res.status(404).json({ message: 'Expense not found' });
+    res.json({ message: 'Expense deleted successfully' });
+  });
+}
 
-module.exports = { addCrop, listCrops, addExpenseEntry, addSaleEntry, getCropSummary };
+function deleteSaleEntry(req, res) {
+  deleteSale(req.params.id, (err, changes) => {
+    if (err) return res.status(500).json({ message: 'Error deleting sale' });
+    if (changes === 0) return res.status(404).json({ message: 'Sale not found' });
+    res.json({ message: 'Sale deleted successfully' });
+  });
+}
+function deleteCropEntry(req, res) {
+  deleteCrop(req.params.id, req.userId, (err, changes) => {
+    if (err) return res.status(500).json({ message: 'Error deleting crop' });
+    if (changes === 0) return res.status(404).json({ message: 'Crop not found' });
+    res.json({ message: 'Crop deleted successfully' });
+  });
+}
+
+module.exports = { addCrop, listCrops, addExpenseEntry, addSaleEntry, getCropSummary, deleteExpenseEntry, deleteSaleEntry, deleteCropEntry };

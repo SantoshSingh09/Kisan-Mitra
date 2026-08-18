@@ -13,5 +13,11 @@ function getExpensesByCrop(cropId, callback) {
     callback(err, rows);
   });
 }
+function deleteExpense(expenseId, callback) {
+  const sql = `DELETE FROM expenses WHERE id = ?`;
+  db.run(sql, [expenseId], function (err) {
+    callback(err, this ? this.changes : 0);
+  });
+}
 
-module.exports = { addExpense, getExpensesByCrop };
+module.exports = { addExpense, getExpensesByCrop, deleteExpense };

@@ -20,5 +20,10 @@ function getCropById(cropId, callback) {
     callback(err, row);
   });
 }
-
-module.exports = { createCrop, getCropsByUser, getCropById };
+function deleteCrop(cropId, userId, callback) {
+  const sql = `DELETE FROM crops WHERE id = ? AND user_id = ?`;
+  db.run(sql, [cropId, userId], function (err) {
+    callback(err, this ? this.changes : 0);
+  });
+}
+module.exports = { createCrop, getCropsByUser, getCropById, deleteCrop };

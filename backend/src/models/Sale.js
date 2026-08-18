@@ -13,5 +13,10 @@ function getSalesByCrop(cropId, callback) {
     callback(err, rows);
   });
 }
-
-module.exports = { addSale, getSalesByCrop };
+function deleteSale(saleId, callback) {
+  const sql = `DELETE FROM sales WHERE id = ?`;
+  db.run(sql, [saleId], function (err) {
+    callback(err, this ? this.changes : 0);
+  });
+}
+module.exports = { addSale, getSalesByCrop, deleteSale };
