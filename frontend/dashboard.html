@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard — Kisan Mitra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+  <div class="sidebar">
+    <div class="brand">
+      <h1>Kisan Mitra</h1>
+      <div class="sub">Gorakhpur District</div>
+    </div>
+    <div class="user-chip">
+      <div class="name" id="user-name-display">—</div>
+      <div class="logout" onclick="doLogout()">Logout</div>
+    </div>
+    <ul class="navlist">
+      <li><a class="navitem active" href="dashboard.html">Dashboard</a></li>
+      <li><a class="navitem" href="mandi.html">Mandi Bhav</a></li>
+      <li><a class="navitem" href="weather.html">Mausam</a></li>
+      <li><a class="navitem" href="disease.html">Rog Pehchan</a></li>
+      <li><a class="navitem" href="finance.html">Kharch-Kamai</a></li>
+      <li><a class="navitem" href="crop.html">Fasal Sujhav</a></li>
+    </ul>
+    <div class="sidebar-foot">Connected to backend<br>http://localhost:5000</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h2>Dashboard</h2>
+        <div class="page-sub">Ek nazar mein sab kuch</div>
+      </div>
+      <div class="loc-pill" id="loc-pill"><span class="dot"></span><span id="loc-text">Location detect nahi
+          hui</span><button onclick="detectLocation()">📍 Detect</button></div>
+    </div>
+
+    <div class="content">
+      <div class="card" id="loc-summary-card" style="display:none;">
+        <h3>Aapka area</h3>
+        <div class="loc-detail-grid">
+          <div>
+            <div class="k">Your Location</div>
+            <div class="v" id="dash-village">—</div>
+          </div>
+          <div>
+            <div class="k">Tehsil</div>
+            <div class="v" id="dash-tehsil">—</div>
+          </div>
+          <div>
+            <div class="k">Nearest mandi</div>
+            <div class="v" id="dash-mandi">—</div>
+          </div>
+          <div>
+            <div class="k">Soil type</div>
+            <div class="v" id="dash-soil">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix">
+        <a class="col3 card" style="display:block;cursor:pointer;" href="mandi.html">
+          <h3>Mandi Bhav</h3>
+          <p style="font-size:12px;color:#6b6656;">Sample rates dekhein</p>
+        </a>
+        <a class="col3 card" style="display:block;cursor:pointer;" href="weather.html">
+          <h3>Mausam</h3>
+          <p style="font-size:12px;color:#6b6656;">Live weather Gorakhpur ka</p>
+        </a>
+        <a class="col3 card" style="display:block;cursor:pointer;" href="finance.html">
+          <h3>Kharch-Kamai</h3>
+          <p style="font-size:12px;color:#6b6656;">Apna hisaab-kitab dekhein</p>
+        </a>
+      </div>
+      <div class="clearfix">
+        <a class="col2 card" style="display:block;cursor:pointer;" href="disease.html">
+          <h3>Rog Pehchan</h3>
+          <p style="font-size:13px;color:#5c5a4c;">Patte ki photo se disease check karein.</p>
+        </a>
+        <a class="col2 card" style="display:block;cursor:pointer;" href="crop.html">
+          <h3>Fasal Sujhav</h3>
+          <p style="font-size:13px;color:#5c5a4c;">Season/soil ke hisaab se sahi fasal jaanein.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/location.js"></script>
+  <script>
+  requireAuth();
+  restoreLocationUI();
+</script>
+</body>
+
+</html>

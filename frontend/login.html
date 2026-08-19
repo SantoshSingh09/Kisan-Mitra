@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login — Kisan Mitra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <div class="auth-page">
+    <div>
+      <div class="auth-box">
+        <h1>Login</h1>
+        <div class="sub">Kisan Mitra mein wapas swagat hai</div>
+        <div class="auth-error" id="auth-error"></div>
+
+        <label>Phone number</label>
+        <input type="tel" id="login-phone" placeholder="Enter Your Mobile Number">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="Enter your Password">
+        <button class="btn-primary" onclick="doLogin()">Login</button>
+
+        <div class="auth-switch">Account nahi hai? <a href="register.html">Signup karein</a></div>
+        <div class="auth-status" id="auth-status">Backend must be running at localhost:5000</div>
+      </div>
+      <div style="text-align:center;"><a href="home.html" class="auth-back">← Home par wapas jayein</a></div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+
+</html>

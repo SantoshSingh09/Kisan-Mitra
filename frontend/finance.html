@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Kharch-Kamai — Kisan Mitra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+  <div class="sidebar">
+    <div class="brand">
+      <h1>Kisan Mitra</h1>
+      <div class="sub">Gorakhpur District</div>
+    </div>
+    <div class="user-chip">
+      <div class="name" id="user-name-display">—</div>
+      <div class="logout" onclick="doLogout()">Logout</div>
+    </div>
+    <ul class="navlist">
+      <li><a class="navitem" href="dashboard.html">Dashboard</a></li>
+      <li><a class="navitem" href="mandi.html">Mandi Bhav</a></li>
+      <li><a class="navitem" href="weather.html">Mausam</a></li>
+      <li><a class="navitem" href="disease.html">Rog Pehchan</a></li>
+      <li><a class="navitem active" href="finance.html">Kharch-Kamai</a></li>
+      <li><a class="navitem" href="crop.html">Fasal Sujhav</a></li>
+    </ul>
+    <div class="sidebar-foot">Connected to backend<br>http://localhost:5000</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h2>Kharch-Kamai</h2>
+        <div class="page-sub">Hisaab-kitab calculator</div>
+      </div>
+      <div class="loc-pill" id="loc-pill"><span class="dot"></span><span id="loc-text">Location detect nahi
+          hui</span><button onclick="detectLocation()">📍 Detect</button></div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <h3>Fasal chunein</h3>
+        <select id="crop-select" onchange="onCropSelect()">
+          <option value="">— Fasal select karein —</option>
+        </select>
+        <div style="display:flex;gap:10px;">
+          <button class="btn-primary" style="background:#8B5A2B;" onclick="toggleAddCropForm()">+ Nayi fasal
+            jodo</button>
+          <button class="btn-primary" style="background:#A3432E;" onclick="deleteCurrentCrop()">Yeh fasal delete
+            karein</button>
+        </div>
+        <div id="add-crop-form" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid #DCD5C2;">
+          <label>Fasal ka naam</label>
+          <input type="text" id="new-crop-name" placeholder="Jaise: Gehu">
+          <label>Season</label>
+          <select id="new-crop-season">
+            <option value="Kharif">Kharif</option>
+            <option value="Rabi">Rabi</option>
+            <option value="Zaid">Zaid</option>
+          </select>
+          <label>Area (acre)</label>
+          <input type="number" id="new-crop-area" placeholder="Jaise: 2">
+          <button class="btn-primary" onclick="createCrop()">Fasal save karein</button>
+        </div>
+      </div>
+
+      <div id="finance-body" style="display:none;">
+        <div class="clearfix">
+          <div class="col2 card">
+            <div class="toggle-row">
+              <div class="toggle-btn active" id="tab-expense" onclick="switchFinanceTab('expense')">Kharcha jodo</div>
+              <div class="toggle-btn" id="tab-income" onclick="switchFinanceTab('income')">Kamai jodo</div>
+            </div>
+            <div id="finance-form-expense">
+              <label>Kharcha type</label>
+              <select id="exp-type">
+                <option>Beej</option>
+                <option>Khaad</option>
+                <option>Pesticide</option>
+                <option>Mazdoori</option>
+                <option>Diesel/Bijli</option>
+                <option>Anya</option>
+              </select>
+              <label>Amount (₹)</label>
+              <input type="number" id="exp-amount" placeholder="Jaise: 2500">
+              <button class="btn-primary" onclick="addExpense()">Kharcha jodo</button>
+            </div>
+            <div id="finance-form-income" style="display:none;">
+              <label>Quantity (quintal)</label>
+              <input type="number" id="inc-qty" placeholder="Jaise: 8">
+              <label>Rate (₹ per quintal)</label>
+              <input type="number" id="inc-rate" placeholder="Jaise: 2400">
+              <label>Mandi</label>
+              <input type="text" id="inc-mandi" placeholder="Jaise: Gorakhpur Mandi">
+              <button class="btn-primary" onclick="addSale()">Kamai jodo</button>
+            </div>
+          </div>
+          <div class="col2 card">
+            <h3>Summary</h3>
+            <div class="clearfix" style="gap:10px;">
+              <div class="summary-box" style="float:left;width:31%;margin-right:3%;">
+                <div class="v" id="sum-expense">₹0</div>
+                <div class="l">Kul kharcha</div>
+              </div>
+              <div class="summary-box" style="float:left;width:31%;margin-right:3%;">
+                <div class="v" id="sum-income">₹0</div>
+                <div class="l">Kul kamai</div>
+              </div>
+              <div class="summary-box" id="sum-profit-box" style="float:left;width:31%;">
+                <div class="v" id="sum-profit">₹0</div>
+                <div class="l">Profit/Loss</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section-label">History</div>
+        <div class="card" id="finance-history">
+          <div class="empty">Loading...</div>
+        </div>
+      </div>
+      <div id="finance-empty-msg" class="empty">Upar se ek fasal chunein ya nayi fasal jodein, tabhi kharcha/kamai add
+        ho payega.</div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/location.js"></script>
+  <script src="js/finance.js"></script>
+  <script>
+    requireAuth();
+    restoreLocationUI();
+    loadCrops();
+  </script>
+</body>
+
+</html>
