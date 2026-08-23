@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin — Kisan Mitra</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<div class="sidebar">
+  <div class="brand"><h1>Kisan Mitra</h1><div class="sub">Admin Panel</div></div>
+  <div class="user-chip">
+    <div class="name" id="user-name-display">—</div>
+    <div class="logout" onclick="doLogout()">Logout</div>
+  </div>
+  <ul class="navlist">
+    <li><a class="navitem" href="dashboard.html">← Back to App</a></li>
+    <li><a class="navitem active" href="admin.html">Admin Dashboard</a></li>
+  </ul>
+  <div class="sidebar-foot">Connected to backend<br>http://localhost:5000</div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div><h2>Admin Panel</h2><div class="page-sub">Manage users and crop data</div></div>
+  </div>
+
+  <div class="content">
+    <div id="access-denied" class="card" style="display:none;">
+      <h3>Access denied</h3>
+      <p style="font-size:13px;color:#5c5a4c;">This page is only available to admin accounts.</p>
+    </div>
+
+    <div id="admin-body" style="display:none;">
+      <div class="section-label">Overview</div>
+      <div class="clearfix">
+        <div class="col3 card"><div class="stat-row"><span class="big" id="stat-users">—</span><span class="lbl">Total users</span></div></div>
+        <div class="col3 card"><div class="stat-row"><span class="big" id="stat-crops">—</span><span class="lbl">Total crops</span></div></div>
+        <div class="col3 card"><div class="stat-row"><span class="big" id="stat-expenses">—</span><span class="lbl">Total expenses</span></div></div>
+      </div>
+
+      <div class="section-label">Users</div>
+      <div class="card">
+        <table class="price-table">
+          <thead><tr><th>Name</th><th>Phone</th><th>Region</th><th>Role</th><th></th></tr></thead>
+          <tbody id="users-table"></tbody>
+        </table>
+      </div>
+
+      <div class="section-label">Crop Recommendation Data</div>
+      <div class="card">
+        <label>Region</label>
+        <input type="text" id="new-region" value="Gorakhpur">
+        <label>Season</label>
+        <select id="new-season"><option value="kharif">Kharif</option><option value="rabi">Rabi</option><option value="zaid">Zaid</option></select>
+        <label>Soil type</label>
+        <select id="new-soil"><option value="alluvial">Alluvial</option><option value="clayey">Clayey</option><option value="sandy">Sandy</option></select>
+        <label>Recommended crops (comma-separated)</label>
+        <input type="text" id="new-crops" placeholder="Gehu,Sarso,Chana">
+        <button class="btn-primary" onclick="addCropLookupEntry()">Add entry</button>
+      </div>
+
+      <div class="card">
+        <table class="price-table">
+          <thead><tr><th>Region</th><th>Season</th><th>Soil</th><th>Crops</th><th></th></tr></thead>
+          <tbody id="crop-lookup-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  requireAuth();
+  initAdminPage();
+</script>
+</body>
+</html>

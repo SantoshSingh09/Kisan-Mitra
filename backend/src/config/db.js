@@ -27,15 +27,15 @@ function seedCropLookup() {
     if (row.count > 0) return; // already seeded, skip
 
     const seedData = [
-      ['Gorakhpur', 'kharif', 'alluvial', 'Dhan,Ganna,Makka,Arhar,Urad,Til'],
-      ['Gorakhpur', 'kharif', 'clayey', 'Dhan,Jute,Arhar,Urad'],
-      ['Gorakhpur', 'kharif', 'sandy', 'Bajra,Moong,Til'],
-      ['Gorakhpur', 'rabi', 'alluvial', 'Gehu,Sarso,Chana,Matar,Masoor,Aloo,Alsi'],
-      ['Gorakhpur', 'rabi', 'clayey', 'Gehu,Masoor,Chana'],
-      ['Gorakhpur', 'rabi', 'sandy', 'Chana,Jau,Sarso'],
-      ['Gorakhpur', 'zaid', 'alluvial', 'Kheera,Tarbuz,Moong,Kakdi,Bhindi'],
-      ['Gorakhpur', 'zaid', 'clayey', 'Moong,Kheera'],
-      ['Gorakhpur', 'zaid', 'sandy', 'Tarbuz,Kheera,Moong']
+      ['Gorakhpur', 'kharif', 'alluvial', 'Dhan,Ganna,Makka,Arhar,Urad,Soybean,Til,Bhindi,Baingan,Lauki,Tori,Karela'],
+      ['Gorakhpur', 'kharif', 'clayey', 'Dhan,Jute,Arhar,Bhindi,Karela'],
+      ['Gorakhpur', 'kharif', 'sandy', 'Bajra,Moong,Til,Lauki,Tori'],
+      ['Gorakhpur', 'rabi', 'alluvial', 'Gehu,Sarso,Chana,Matar,Jau,Masoor,Alsi,Palak,Methi,Dhaniya,Gobi (Phool),Patta Gobi,Gajar,Mooli'],
+      ['Gorakhpur', 'rabi', 'clayey', 'Gehu,Masoor,Alsi,Palak,Mooli'],
+      ['Gorakhpur', 'rabi', 'sandy', 'Chana,Jau,Sarso,Gajar,Mooli'],
+      ['Gorakhpur', 'zaid', 'alluvial', 'Kheera,Tarbuz,Moong,Bhindi,Kaddu,Kharbuja,Lauki,Tori,Karela'],
+      ['Gorakhpur', 'zaid', 'clayey', 'Moong,Bhindi,Lauki'],
+      ['Gorakhpur', 'zaid', 'sandy', 'Tarbuz,Kheera,Kharbuja,Kaddu']
     ];
 
     const stmt = db.prepare('INSERT INTO crop_lookup (region, season, soil_type, recommended_crops) VALUES (?, ?, ?, ?)');

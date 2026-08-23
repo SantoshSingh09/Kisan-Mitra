@@ -31,6 +31,7 @@
       <li><a class="navitem" href="disease.html">Rog Pehchan</a></li>
       <li><a class="navitem" href="finance.html">Kharch-Kamai</a></li>
       <li><a class="navitem" href="crop.html">Fasal Sujhav</a></li>
+      <li id="admin-nav-link" style="display:none;"><a class="navitem" href="admin.html">⚙ Admin Panel</a></li>
     </ul>
     <div class="sidebar-foot">Connected to backend<br>http://localhost:5000</div>
   </div>
@@ -98,9 +99,13 @@
   <script src="js/api.js"></script>
   <script src="js/location.js"></script>
   <script>
-  requireAuth();
-  restoreLocationUI();
-</script>
+    requireAuth();
+    restoreLocationUI();
+    const currentUser = getUser();
+    if (currentUser && currentUser.role === 'admin') {
+      document.getElementById('admin-nav-link').style.display = 'block';
+    }
+  </script>
 </body>
 
 </html>

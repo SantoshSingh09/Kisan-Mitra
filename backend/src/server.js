@@ -10,6 +10,7 @@ const weatherRoutes = require('./routes/weatherRoutes');
 const diseaseRoutes = require('./routes/diseaseRoutes');
 const locationRoutes = require('./routes/locationRoutes');
 const mandiRoutes = require('./routes/mandiRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 app.use(cors());
@@ -22,6 +23,7 @@ app.use('/api/weather', weatherRoutes);
 app.use('/api/disease', diseaseRoutes);
 app.use('/api/location', locationRoutes);
 app.use('/api/mandi', mandiRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/', (req, res) => {
   res.send('Kisan Mitra backend is running');

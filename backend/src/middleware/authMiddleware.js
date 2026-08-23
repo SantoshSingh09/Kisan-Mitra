@@ -9,8 +9,17 @@ function verifyToken(req, res, next) {
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) return res.status(403).json({ message: 'Invalid or expired token' });
     req.userId = decoded.id;
+    req.userRole = decoded.role;
     next();
   });
 }
 
+function requireAdmin(req, res, next) {
+  if (req.userRole !== 'admin') {
+    return res.status(403).json({ message: 'Admin access required' });
+  }
+  next();
+}
+
 module.exports = verifyToken;
+module.exports.requireAdmin = requireAdmin;

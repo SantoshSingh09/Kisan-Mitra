@@ -748,3 +748,62 @@ label {
     display: block;
   }
 }
+
+.crop-detail-grid {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.crop-detail-grid div {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  flex: 1;
+  min-width: 160px;
+}
+
+.crop-detail-grid .k {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--brown);
+  text-transform: uppercase;
+}
+
+.crop-detail-grid .v {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.crop-problems {
+  margin-top: 16px;
+}
+
+.crop-problems .k {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--brown);
+  text-transform: uppercase;
+}
+
+.problem-chip {
+  display: inline-block;
+  background: #F5DEDB;
+  color: var(--danger);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 14px;
+  margin: 0 6px 6px 0;
+}
+
+.crop-note {
+  margin-top: 14px;
+  font-size: 11px;
+  color: #8a8674;
+  font-style: italic;
+}

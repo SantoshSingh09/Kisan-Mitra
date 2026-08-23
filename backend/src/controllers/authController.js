@@ -23,8 +23,12 @@ function login(req, res) {
     if (err || !user) return res.status(400).json({ message: 'User not found' });
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-      res.json({ message: 'Login successful', token, user: { id: user.id, name: user.name } });
+      const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
+      res.json({
+        message: 'Login successful',
+        token,
+        user: { id: user.id, name: user.name, role: user.role }
+      });
     });
   });
 }
