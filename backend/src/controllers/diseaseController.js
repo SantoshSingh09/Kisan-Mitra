@@ -10,7 +10,7 @@ const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024; // 4 MB after base64 decode
 const ATTEMPT_TIMEOUT_MS = 75000; // har model ko itna time; na chale to agla model
 
-const PROMPT = `You are an expert plant pathologist helping small farmers in Gorakhpur, Uttar Pradesh, India.
+const PROMPT = `You are an expert plant pathologist helping small farmers in Uttar Pradesh, India.
 Look at the attached photo of a crop leaf/plant and diagnose it.
 
 How to diagnose carefully:
