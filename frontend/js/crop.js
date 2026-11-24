@@ -14,7 +14,7 @@ async function recommendCrops(){
   document.getElementById('crop-detail-panel').style.display = 'none';
   el.innerHTML = '<div class="empty">लोड हो रहा है...</div>';
   try{
-    const res = await fetch(`${API_BASE}/crop/recommend?season=${season}&soil=${soil}&region=Gorakhpur`);
+    fetch(`${API_BASE}/crop/recommend?season=${season}&soil=${soil}`)
     const data = await res.json();
     if(!res.ok){ el.innerHTML = `<div class="empty">${hiMsg(data.message)}</div>`; return; }
     el.innerHTML = data.recommendedCrops.map(c=>
