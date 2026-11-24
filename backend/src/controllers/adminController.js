@@ -18,7 +18,7 @@ function getStats(req, res) {
 }
 
 function listUsers(req, res) {
-  db.all('SELECT id, name, phone, region, role, created_at FROM users ORDER BY id DESC', [], (err, rows) => {
+  db.all('SELECT id, name, phone, region, block, role, created_at FROM users ORDER BY id DESC', [], (err, rows) => {
     if (err) return res.status(500).json({ message: 'Error fetching users' });
     res.json({ users: rows });
   });

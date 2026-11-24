@@ -10,10 +10,10 @@ function getProfile(req, res) {
 }
 
 function editProfile(req, res) {
-  const { name, region } = req.body;
+  const { name, region, block } = req.body;
   if (!name) return res.status(400).json({ message: 'Name is required' });
 
-  updateProfile(req.userId, name, region, (err) => {
+    updateProfile(req.userId, name, region || null, block || null, (err) => {
     if (err) return res.status(500).json({ message: 'Error updating profile' });
     res.json({ message: 'Profile updated successfully' });
   });

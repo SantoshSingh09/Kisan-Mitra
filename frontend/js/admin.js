@@ -30,23 +30,23 @@ async function loadUsers(){
       <tr>
         <td>${u.name}</td>
         <td>${u.phone}</td>
-        <td>${u.region || '—'}</td>
-        <td>${u.role}</td>
+        <td>${placeLabelHi(u.region, u.block)}</td>
+        <td>${HI_ROLES[u.role] || u.role}</td>
         <td>${u.role !== 'admin' ? `<span class="delete-btn" onclick="deleteUserById(${u.id})">✕</span>` : ''}</td>
       </tr>
     `).join('');
-    document.getElementById('users-table').innerHTML = rows || '<tr><td colspan="5">No users found</td></tr>';
+    document.getElementById('users-table').innerHTML = rows || '<tr><td colspan="5">कोई उपयोगकर्ता नहीं मिला</td></tr>';
   }catch(err){ console.error(err); }
 }
 
 async function deleteUserById(id){
-  if(!confirm('Delete this user and all their data? This cannot be undone.')) return;
+  if(!confirm('क्या आप इस उपयोगकर्ता और उसका पूरा डेटा हटाना चाहते हैं? यह वापस नहीं हो सकेगा।')) return;
   try{
     const res = await fetch(`${API_BASE}/admin/users/${id}`, { method:'DELETE', headers: authHeaders() });
-    if(!res.ok){ alert('Error deleting user'); return; }
+    if(!res.ok){ alert('उपयोगकर्ता हटाने में समस्या आई'); return; }
     loadUsers();
     loadStats();
-  }catch(err){ alert('Could not connect to backend'); }
+  }catch(err){ alert('सर्वर से जुड़ नहीं पाए'); }
 }
 
 async function loadCropLookup(){
@@ -55,11 +55,11 @@ async function loadCropLookup(){
     const data = await res.json();
     const rows = (data.entries || []).map(e => `
       <tr>
-        <td>${e.region}</td><td>${e.season}</td><td>${e.soil_type}</td><td>${e.recommended_crops}</td>
+        <td>${hiPlace(e.region)}</td><td>${hiSeason(e.season)}</td><td>${hiSoil(e.soil_type)}</td><td>${String(e.recommended_crops).split(',').map(c => hiCrop(c.trim())).join(', ')}</td>
         <td><span class="delete-btn" onclick="deleteCropLookupEntry(${e.id})">✕</span></td>
       </tr>
     `).join('');
-    document.getElementById('crop-lookup-table').innerHTML = rows || '<tr><td colspan="5">No entries found</td></tr>';
+    document.getElementById('crop-lookup-table').innerHTML = rows || '<tr><td colspan="5">कोई एंट्री नहीं मिली</td></tr>';
   }catch(err){ console.error(err); }
 }
 
@@ -68,24 +68,24 @@ async function addCropLookupEntry(){
   const season = document.getElementById('new-season').value;
   const soilType = document.getElementById('new-soil').value;
   const recommendedCrops = document.getElementById('new-crops').value.trim();
-  if(!region || !recommendedCrops){ alert('Fill in all fields'); return; }
+  if(!region || !recommendedCrops){ alert('सभी जानकारी भरें'); return; }
 
   try{
     const res = await fetch(`${API_BASE}/admin/crop-lookup`, {
       method:'POST', headers: authHeaders(),
       body: JSON.stringify({ region, season, soilType, recommendedCrops })
     });
-    if(!res.ok){ alert('Error adding entry'); return; }
+    if(!res.ok){ alert('एंट्री जोड़ने में समस्या आई'); return; }
     document.getElementById('new-crops').value = '';
     loadCropLookup();
-  }catch(err){ alert('Could not connect to backend'); }
+  }catch(err){ alert('सर्वर से जुड़ नहीं पाए'); }
 }
 
 async function deleteCropLookupEntry(id){
-  if(!confirm('Delete this entry?')) return;
+  if(!confirm('क्या आप यह एंट्री हटाना चाहते हैं?')) return;
   try{
     const res = await fetch(`${API_BASE}/admin/crop-lookup/${id}`, { method:'DELETE', headers: authHeaders() });
-    if(!res.ok){ alert('Error deleting entry'); return; }
+    if(!res.ok){ alert('एंट्री हटाने में समस्या आई'); return; }
     loadCropLookup();
-  }catch(err){ alert('Could not connect to backend'); }
+  }catch(err){ alert('सर्वर से जुड़ नहीं पाए'); }
 }

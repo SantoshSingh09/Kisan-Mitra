@@ -1,101 +1,62 @@
 <!DOCTYPE html>
 <html lang="hi">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Mandi Bhav — Kisan Mitra</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<title>मंडी भाव — किसान मित्र</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-  <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
 
-  <div class="sidebar">
-    <div class="brand">
-      <h1>Kisan Mitra</h1>
-      <div class="sub">Gorakhpur District</div>
-    </div>
-    <div class="user-chip">
-      <div class="name" id="user-name-display">—</div>
-      <div class="logout" onclick="doLogout()">Logout</div>
-    </div>
-    <ul class="navlist">
-      <li><a class="navitem" href="dashboard.html">Dashboard</a></li>
-      <li><a class="navitem active" href="mandi.html">Mandi Bhav</a></li>
-      <li><a class="navitem" href="weather.html">Mausam</a></li>
-      <li><a class="navitem" href="disease.html">Rog Pehchan</a></li>
-      <li><a class="navitem" href="finance.html">Kharch-Kamai</a></li>
-      <li><a class="navitem" href="crop.html">Fasal Sujhav</a></li>
-    </ul>
-    <div class="sidebar-foot">Connected to backend<br>http://localhost:5000</div>
+<div class="sidebar">
+  <div class="brand"><h1>किसान मित्र</h1><div class="sub">गोरखपुर जिला</div></div>
+  <div class="user-chip">
+    <div class="name" id="user-name-display">—</div>
+    <div class="logout" onclick="doLogout()">लॉगआउट</div>
+  </div>
+  <ul class="navlist">
+    <li><a class="navitem" href="dashboard.html">डैशबोर्ड</a></li>
+    <li><a class="navitem active" href="mandi.html">मंडी भाव</a></li>
+    <li><a class="navitem" href="weather.html">मौसम</a></li>
+    <li><a class="navitem" href="disease.html">रोग पहचान</a></li>
+    <li><a class="navitem" href="finance.html">खर्च-कमाई</a></li>
+    <li><a class="navitem" href="crop.html">फसल सुझाव</a></li>
+    <li><a class="navitem" href="profile.html">मेरी प्रोफाइल</a></li>
+    <li id="admin-nav-link" style="display:none;"><a class="navitem" href="admin.html">⚙ एडमिन पैनल</a></li>
+  </ul>
+  <div class="sidebar-foot">बैकएंड से जुड़ा है<br>http://localhost:5000</div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div><h2>मंडी भाव</h2><div class="page-sub">गोरखपुर जनपद की मंडियां</div></div>
+    <div class="loc-pill" id="loc-pill"><span class="dot"></span><span id="loc-text">स्थान का पता नहीं चला</span><button onclick="detectLocation()">📍 पता करें</button></div>
   </div>
 
-  <div class="main">
-    <div class="topbar">
-      <div>
-        <h2>Mandi Bhav</h2>
-        <div class="page-sub">Gorakhpur janpad ki mandiyan</div>
-      </div>
-      <div class="loc-pill" id="loc-pill"><span class="dot"></span><span id="loc-text">Location detect nahi
-          hui</span><button onclick="detectLocation()">📍 Detect</button></div>
+  <div class="content">
+    <span class="demo-flag">नमूना डेटा — प्रदर्शन हेतु</span>
+    <div class="clearfix">
+      <div class="col2 card"><h3>गोरखपुर मंडी</h3><table class="price-table"><thead><tr><th>फसल</th><th>दर (₹/क्विंटल)</th></tr></thead><tbody id="mandi-gkp"></tbody></table></div>
+      <div class="col2 card"><h3>सहजनवा मंडी</h3><table class="price-table"><thead><tr><th>फसल</th><th>दर (₹/क्विंटल)</th></tr></thead><tbody id="mandi-sehjanwa"></tbody></table></div>
     </div>
-
-    <div class="content">
-      <span class="demo-flag">Sample data — real Agmarknet API inconsistent thi, demo data use kar rahe hain</span>
-      <div class="clearfix">
-        <div class="col2 card">
-          <h3>Gorakhpur Mandi</h3>
-          <table class="price-table">
-            <thead>
-              <tr>
-                <th>Fasal</th>
-                <th>Rate (₹/quintal)</th>
-              </tr>
-            </thead>
-            <tbody id="mandi-gkp"></tbody>
-          </table>
-        </div>
-        <div class="col2 card">
-          <h3>Sehjanwa Mandi</h3>
-          <table class="price-table">
-            <thead>
-              <tr>
-                <th>Fasal</th>
-                <th>Rate (₹/quintal)</th>
-              </tr>
-            </thead>
-            <tbody id="mandi-sehjanwa"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="card" style="max-width:500px;">
-        <h3>Chorichora Mandi</h3>
-        <table class="price-table">
-          <thead>
-            <tr>
-              <th>Fasal</th>
-              <th>Rate (₹/quintal)</th>
-            </tr>
-          </thead>
-          <tbody id="mandi-chorichora"></tbody>
-        </table>
-      </div>
-    </div>
+    <div class="card" style="max-width:500px;"><h3>चौरीचौरा मंडी</h3><table class="price-table"><thead><tr><th>फसल</th><th>दर (₹/क्विंटल)</th></tr></thead><tbody id="mandi-chorichora"></tbody></table></div>
   </div>
+</div>
 
-  <script src="js/api.js"></script>
-  <script src="js/location.js"></script>
-  <script src="js/mandi.js"></script>
- <script>
+<script src="js/api.js"></script>
+<script src="js/location.js"></script>
+<script src="js/mandi.js"></script>
+<script>
   requireAuth();
   restoreLocationUI();
   renderMandi();
+  const currentUser = getUser();
+  if(currentUser && currentUser.role === 'admin'){
+    document.getElementById('admin-nav-link').style.display = 'block';
+  }
 </script>
 </body>
-
 </html>

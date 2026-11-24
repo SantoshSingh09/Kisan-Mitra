@@ -2,19 +2,31 @@
 
 let selectedCropId = null;
 
-async function loadCrops() {
-  try {
+const cropNameHindi = {
+  "Gehu":"गेहूं","Dhan":"धान","Ganna":"गन्ना","Makka":"मक्का","Chana":"चना","Arhar":"अरहर",
+  "Sarso":"सरसों","Matar":"मटर","Moong":"मूंग","Urad":"उड़द","Soybean":"सोयाबीन","Til":"तिल",
+  "Bajra":"बाजरा","Jau":"जौ","Masoor":"मसूर","Aloo":"आलू","Pyaz":"प्याज़","Tamatar":"टमाटर",
+  "Bhindi":"भिंडी","Baingan":"बैंगन","Lauki":"लौकी","Karela":"करेला","Palak":"पालक",
+  "Gobi (Phool)":"फूल गोभी","Patta Gobi":"पत्ता गोभी","Gajar":"गाजर","Mooli":"मूली",
+  "Kheera":"खीरा","Tarbuz":"तरबूज़","Kharbuja":"खरबूजा","Kaddu":"कद्दू"
+};
+const seasonHindi = { "Kharif":"खरीफ", "Rabi":"रबी", "Zaid":"ज़ायद" };
+
+async function loadCrops(){
+  try{
     const res = await fetch(`${API_BASE}/finance/crops`, { headers: authHeaders() });
     const data = await res.json();
     const select = document.getElementById('crop-select');
-    select.innerHTML = '<option value="">— Fasal select karein —</option>';
-    (data.crops || []).forEach(c => {
+    select.innerHTML = '<option value="">— फसल चुनें —</option>';
+    (data.crops || []).forEach(c=>{
       const opt = document.createElement('option');
       opt.value = c.id;
-      opt.textContent = `${c.crop_name} (${c.season || 'season?'})`;
+      const hindiName = cropNameHindi[c.crop_name] || c.crop_name;
+      const hindiSeason = seasonHindi[c.season] || c.season || '';
+      opt.textContent = `${hindiName} (${hindiSeason})`;
       select.appendChild(opt);
     });
-  } catch (err) { console.error(err); }
+  }catch(err){ console.error(err); }
 }
 
 function toggleAddCropForm() {
@@ -26,21 +38,21 @@ async function createCrop() {
   const cropName = document.getElementById('new-crop-name').value.trim();
   const season = document.getElementById('new-crop-season').value;
   const area = parseFloat(document.getElementById('new-crop-area').value) || null;
-  if (!cropName) { alert('Fasal ka naam zaroori hai'); return; }
+  if (!cropName) { alert('फसल का नाम ज़रूरी है'); return; }
   try {
     const res = await fetch(`${API_BASE}/finance/crop`, {
       method: 'POST', headers: authHeaders(),
       body: JSON.stringify({ cropName, season, area, sowingDate: new Date().toISOString().slice(0, 10) })
     });
     const data = await res.json();
-    if (!res.ok) { alert(data.message || 'Error adding crop'); return; }
+    if (!res.ok) { alert(hiMsg(data.message)); return; }
     document.getElementById('new-crop-name').value = '';
     document.getElementById('new-crop-area').value = '';
     document.getElementById('add-crop-form').style.display = 'none';
     await loadCrops();
     document.getElementById('crop-select').value = data.cropId;
     onCropSelect();
-  } catch (err) { alert('Backend se connect nahi ho paya'); }
+  } catch (err) { alert('सर्वर से जुड़ नहीं पाए, कृपया दोबारा कोशिश करें'); }
 }
 
 function onCropSelect() {
@@ -66,34 +78,34 @@ function switchFinanceTab(tab) {
 async function addExpense() {
   const type = document.getElementById('exp-type').value;
   const amount = parseFloat(document.getElementById('exp-amount').value);
-  if (!amount || amount <= 0) { alert('Sahi amount daalein'); return; }
+  if (!amount || amount <= 0) { alert('सही राशि डालें'); return; }
   try {
     const res = await fetch(`${API_BASE}/finance/expense`, {
       method: 'POST', headers: authHeaders(),
       body: JSON.stringify({ cropId: selectedCropId, type, amount })
     });
-    if (!res.ok) { const d = await res.json(); alert(d.message || 'Error'); return; }
+    if (!res.ok) { const d = await res.json(); alert(hiMsg(d.message)); return; }
     document.getElementById('exp-amount').value = '';
     loadSummary();
-  } catch (err) { alert('Backend se connect nahi ho paya'); }
+  } catch (err) { alert('सर्वर से जुड़ नहीं पाए, कृपया दोबारा कोशिश करें'); }
 }
 
 async function addSale() {
   const quantity = parseFloat(document.getElementById('inc-qty').value);
   const rate = parseFloat(document.getElementById('inc-rate').value);
   const mandiName = document.getElementById('inc-mandi').value.trim();
-  if (!quantity || !rate) { alert('Quantity aur rate zaroori hai'); return; }
+  if (!quantity || !rate) { alert('मात्रा और दर दोनों ज़रूरी हैं'); return; }
   try {
     const res = await fetch(`${API_BASE}/finance/sale`, {
       method: 'POST', headers: authHeaders(),
       body: JSON.stringify({ cropId: selectedCropId, quantity, rate, mandiName })
     });
-    if (!res.ok) { const d = await res.json(); alert(d.message || 'Error'); return; }
+    if (!res.ok) { const d = await res.json(); alert(hiMsg(d.message)); return; }
     document.getElementById('inc-qty').value = '';
     document.getElementById('inc-rate').value = '';
     document.getElementById('inc-mandi').value = '';
     loadSummary();
-  } catch (err) { alert('Backend se connect nahi ho paya'); }
+  } catch (err) { alert('सर्वर से जुड़ नहीं पाए, कृपया दोबारा कोशिश करें'); }
 }
 
 async function loadSummary() {
@@ -109,35 +121,35 @@ async function loadSummary() {
     box.className = 'summary-box ' + (data.profit >= 0 ? 'profit' : 'loss');
 
     const rows = [];
-    (data.expenses || []).forEach(e => rows.push(`<div class="entry-row"><span>${e.type} (kharcha)</span><span class="amt exp">−₹${e.amount.toLocaleString('en-IN')}</span><span class="delete-btn" onclick="deleteEntry('expense', ${e.id})">✕</span></div>`));
-    (data.sales || []).forEach(s => rows.push(`<div class="entry-row"><span>${s.quantity} qtl @ ₹${s.rate} (${s.mandi_name || 'bikri'})</span><span class="amt inc">+₹${(s.quantity * s.rate).toLocaleString('en-IN')}</span><span class="delete-btn" onclick="deleteEntry('sale', ${s.id})">✕</span></div>`));
-    document.getElementById('finance-history').innerHTML = rows.length ? rows.join('') : '<div class="empty">Abhi tak koi entry nahi hui</div>';
+    (data.expenses || []).forEach(e => rows.push(`<div class="entry-row"><span>${hiExpense(e.type)} (खर्च)</span><span class="amt exp">−₹${e.amount.toLocaleString('en-IN')}</span><span class="delete-btn" onclick="deleteEntry('expense', ${e.id})">✕</span></div>`));
+    (data.sales || []).forEach(s => rows.push(`<div class="entry-row"><span>${s.quantity} क्विंटल @ ₹${s.rate} (${hiPlace(s.mandi_name) || 'बिक्री'})</span><span class="amt inc">+₹${(s.quantity * s.rate).toLocaleString('en-IN')}</span><span class="delete-btn" onclick="deleteEntry('sale', ${s.id})">✕</span></div>`));
+    document.getElementById('finance-history').innerHTML = rows.length ? rows.join('') : '<div class="empty">अभी तक कोई एंट्री नहीं हुई</div>';
   } catch (err) { console.error(err); }
 }
 
 async function deleteEntry(type, id) {
-  if (!confirm('Kya aap yeh entry delete karna chahte hain?')) return;
+  if (!confirm('क्या आप यह एंट्री हटाना चाहते हैं?')) return;
   try {
     const res = await fetch(`${API_BASE}/finance/${type}/${id}`, {
       method: 'DELETE', headers: authHeaders()
     });
-    if (!res.ok) { alert('Delete karne mein error aayi'); return; }
+    if (!res.ok) { alert('हटाने में समस्या आई'); return; }
     loadSummary();
   } catch (err) {
-    alert('Backend se connect nahi ho paya');
+    alert('सर्वर से जुड़ नहीं पाए, कृपया दोबारा कोशिश करें');
   }
 }
 async function deleteCurrentCrop() {
-  if (!selectedCropId) { alert('Pehle ek fasal select karein'); return; }
-  if (!confirm('Kya aap yeh poori fasal delete karna chahte hain? Iske saath judi saari kharcha/kamai entries bhi hata di jayengi (delete karne ke baad).')) return;
+  if (!selectedCropId) { alert('पहले एक फसल चुनें'); return; }
+  if (!confirm('क्या आप यह पूरी फसल हटाना चाहते हैं? इसके साथ जुड़ी सारी खर्च/कमाई की एंट्री भी हट जाएंगी।')) return;
   try {
     const res = await fetch(`${API_BASE}/finance/crop/${selectedCropId}`, {
       method: 'DELETE', headers: authHeaders()
     });
-    if (!res.ok) { const d = await res.json(); alert(d.message || 'Delete karne mein error aayi'); return; }
+    if (!res.ok) { const d = await res.json(); alert(hiMsg(d.message)); return; }
     selectedCropId = null;
     document.getElementById('finance-body').style.display = 'none';
     document.getElementById('finance-empty-msg').style.display = 'block';
     loadCrops();
-  } catch (err) { alert('Backend se connect nahi ho paya'); }
+  } catch (err) { alert('सर्वर से जुड़ नहीं पाए, कृपया दोबारा कोशिश करें'); }
 }

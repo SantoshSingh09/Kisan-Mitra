@@ -37,16 +37,16 @@ async function reverseGeocode(req, res) {
   }
 
   try {
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`;
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1&accept-language=hi`;
     const response = await fetch(url, {
-      headers: { 'User-Agent': 'KisanMitraCollegeProject/1.0' }
+      headers: { 'User-Agent': 'KisanMitraCollegeProject/1.0', 'Accept-Language': 'hi' }
     });
     const data = await response.json();
     const address = data.address || {};
 
     const villageName =
       address.village || address.hamlet || address.suburb ||
-      address.town || address.city || 'Unknown location';
+      address.town || address.city || 'अज्ञात स्थान';
 
     const nearest = findNearestTehsil(parseFloat(lat), parseFloat(lon));
 

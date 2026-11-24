@@ -9,7 +9,7 @@ function getWeather(req, res) {
     return res.status(500).json({ message: 'Weather API key is not configured' });
   }
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=hi&appid=${apiKey}`;
 
   https.get(url, (apiRes) => {
     let data = '';

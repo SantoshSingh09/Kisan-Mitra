@@ -1,8 +1,8 @@
 const db = require('../config/db');
 
-function createUser(name, phone, hashedPassword, region, callback) {
-  const sql = `INSERT INTO users (name, phone, password, region) VALUES (?, ?, ?, ?)`;
-  db.run(sql, [name, phone, hashedPassword, region], function (err) {
+function createUser(name, phone, hashedPassword, region, block, callback) {
+  const sql = `INSERT INTO users (name, phone, password, region, block) VALUES (?, ?, ?, ?, ?)`;
+  db.run(sql, [name, phone, hashedPassword, region, block], function (err) {
     callback(err, this ? this.lastID : null);
   });
 }

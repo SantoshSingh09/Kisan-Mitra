@@ -15,12 +15,22 @@ const db = new sqlite3.Database(dbPath, (err) => {
         console.error('Schema error:', err.message);
       } else {
         console.log('Tables ready');
+        addBlockColumnIfMissing();
         seedCropLookup();
       }
     });
   }
 });
-
+function addBlockColumnIfMissing() {
+  db.all('PRAGMA table_info(users)', [], (err, cols) => {
+    if (err) return console.error('Column check error:', err.message);
+    if (cols.some((c) => c.name === 'block')) return;
+    db.run('ALTER TABLE users ADD COLUMN block TEXT', (err) => {
+      if (err) console.error('Add block column error:', err.message);
+      else console.log('users.block column added');
+    });
+  });
+}
 function seedCropLookup() {
   db.get('SELECT COUNT(*) as count FROM crop_lookup', [], (err, row) => {
     if (err) return console.error('Seed check error:', err.message);

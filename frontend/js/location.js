@@ -14,25 +14,25 @@ function restoreLocationUI(){
   if(!saved) return;
   const pill = document.getElementById('loc-pill');
   const txt = document.getElementById('loc-text');
-  if(txt) txt.textContent = saved.village + (saved.accuracy ? ` (±${Math.round(saved.accuracy)}m)` : '');
+  if(txt) txt.textContent = hiPlace(saved.village) + (saved.accuracy ? ` (±${Math.round(saved.accuracy)}m)` : '');
   if(pill) pill.classList.add('detected');
 
   const summaryCard = document.getElementById('loc-summary-card');
   if(summaryCard){
     summaryCard.style.display = 'block';
-    document.getElementById('dash-village').textContent = saved.village;
-    document.getElementById('dash-tehsil').textContent = saved.tehsil;
-    document.getElementById('dash-mandi').textContent = saved.nearestMandi;
-    document.getElementById('dash-soil').textContent = saved.soilType;
+    document.getElementById('dash-village').textContent = hiPlace(saved.village);
+    document.getElementById('dash-tehsil').textContent = hiPlace(saved.tehsil);
+    document.getElementById('dash-mandi').textContent = hiPlace(saved.nearestMandi);
+    document.getElementById('dash-soil').textContent = hiSoil(saved.soilType);
     const accEl = document.getElementById('dash-accuracy');
-    if(accEl) accEl.textContent = saved.accuracy ? `±${Math.round(saved.accuracy)} meters` : '—';
+    if(accEl) accEl.textContent = saved.accuracy ? `±${Math.round(saved.accuracy)} मीटर` : '—';
   }
 }
 
 function detectLocation(){
   const pill=document.getElementById('loc-pill'), txt=document.getElementById('loc-text');
-  if(!navigator.geolocation){ txt.textContent="GPS not available"; return; }
-  txt.textContent="Detecting via GPS (may take a few seconds)...";
+  if(!navigator.geolocation){ txt.textContent="इस फ़ोन/ब्राउज़र में GPS उपलब्ध नहीं है"; return; }
+  txt.textContent="GPS से स्थान खोजा जा रहा है (कुछ सेकंड लग सकते हैं)...";
 
   navigator.geolocation.getCurrentPosition(
     async function(pos){
@@ -43,7 +43,7 @@ function detectLocation(){
       try{
         const res = await fetch(`${API_BASE}/location/reverse?lat=${lat}&lon=${lon}`);
         const data = await res.json();
-        if(!res.ok) throw new Error(data.message || 'Location fetch failed');
+        if(!res.ok) throw new Error(hiMsg(data.message));
 
         saveLocation({
           village: data.village, tehsil: data.tehsil,
@@ -52,14 +52,14 @@ function detectLocation(){
         });
         restoreLocationUI();
       }catch(err){
-        txt.textContent = "Could not fetch location details";
+        txt.textContent = "स्थान की जानकारी नहीं मिल पाई";
       }
     },
     function(err){
-      if(err.code === 1) txt.textContent = "Permission denied";
-      else if(err.code === 2) txt.textContent = "Position unavailable";
-      else if(err.code === 3) txt.textContent = "Request timed out — try again";
-      else txt.textContent = "Could not detect location";
+      if(err.code === 1) txt.textContent = "स्थान की अनुमति नहीं दी गई";
+      else if(err.code === 2) txt.textContent = "स्थान पता नहीं चल पाया";
+      else if(err.code === 3) txt.textContent = "समय समाप्त हो गया — दोबारा कोशिश करें";
+      else txt.textContent = "स्थान पता नहीं चल पाया";
     },
     {
       enableHighAccuracy: true,  // use real GPS chip, not just network/WiFi estimate

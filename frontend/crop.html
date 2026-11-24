@@ -1,88 +1,79 @@
 <!DOCTYPE html>
 <html lang="hi">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Fasal Sujhav — Kisan Mitra</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<title>फसल सुझाव — किसान मित्र</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-  <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
 
-  <div class="sidebar">
-    <div class="brand">
-      <h1>Kisan Mitra</h1>
-      <div class="sub">Gorakhpur District</div>
-    </div>
-    <div class="user-chip">
-      <div class="name" id="user-name-display">—</div>
-      <div class="logout" onclick="doLogout()">Logout</div>
-    </div>
-    <ul class="navlist">
-      <li><a class="navitem" href="dashboard.html">Dashboard</a></li>
-      <li><a class="navitem" href="mandi.html">Mandi Bhav</a></li>
-      <li><a class="navitem" href="weather.html">Mausam</a></li>
-      <li><a class="navitem" href="disease.html">Rog Pehchan</a></li>
-      <li><a class="navitem" href="finance.html">Kharch-Kamai</a></li>
-      <li><a class="navitem active" href="crop.html">Fasal Sujhav</a></li>
-    </ul>
-    <div class="sidebar-foot">Connected to backend<br>http://localhost:5000</div>
+<div class="sidebar">
+  <div class="brand"><h1>किसान मित्र</h1><div class="sub">गोरखपुर जिला</div></div>
+  <div class="user-chip">
+    <div class="name" id="user-name-display">—</div>
+    <div class="logout" onclick="doLogout()">लॉगआउट</div>
+  </div>
+  <ul class="navlist">
+    <li><a class="navitem" href="dashboard.html">डैशबोर्ड</a></li>
+    <li><a class="navitem" href="mandi.html">मंडी भाव</a></li>
+    <li><a class="navitem" href="weather.html">मौसम</a></li>
+    <li><a class="navitem" href="disease.html">रोग पहचान</a></li>
+    <li><a class="navitem" href="finance.html">खर्च-कमाई</a></li>
+    <li><a class="navitem active" href="crop.html">फसल सुझाव</a></li>
+    <li><a class="navitem" href="profile.html">मेरी प्रोफाइल</a></li>
+    <li id="admin-nav-link" style="display:none;"><a class="navitem" href="admin.html">⚙ एडमिन पैनल</a></li>
+  </ul>
+  <div class="sidebar-foot">बैकएंड से जुड़ा है<br>http://localhost:5000</div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div><h2>फसल सुझाव</h2><div class="page-sub">मौसम और मिट्टी के अनुसार</div></div>
+    <div class="loc-pill" id="loc-pill"><span class="dot"></span><span id="loc-text">स्थान का पता नहीं चला</span><button onclick="detectLocation()">📍 पता करें</button></div>
   </div>
 
-  <div class="main">
-    <div class="topbar">
-      <div>
-        <h2>Fasal Sujhav</h2>
-        <div class="page-sub">Season aur soil ke hisaab se</div>
+  <div class="content">
+    <span class="live-flag">लाइव — बैकएंड से</span>
+    <div class="clearfix">
+      <div class="col2 card">
+        <label>मौसम चुनें</label>
+        <select id="crop-season">
+          <option value="kharif">खरीफ (जून–अक्टूबर)</option>
+          <option value="rabi">रबी (नवंबर–मार्च)</option>
+          <option value="zaid">ज़ायद (मार्च–जून)</option>
+        </select>
+        <label>मिट्टी का प्रकार</label>
+        <select id="crop-soil">
+          <option value="alluvial">जलोढ़ (दोमट)</option>
+          <option value="clayey">चिकनी मिट्टी</option>
+          <option value="sandy">बलुई मिट्टी</option>
+        </select>
+        <button class="btn-primary" onclick="recommendCrops()">सुझाई गई फसलें देखें</button>
       </div>
-      <div class="loc-pill" id="loc-pill"><span class="dot"></span><span id="loc-text">Location detect nahi
-          hui</span><button onclick="detectLocation()">📍 Detect</button></div>
-    </div>
-
-    <div class="content">
-      <span class="live-flag">Live — backend rule-based API se</span>
-      <div class="clearfix">
-        <div class="col2 card">
-          <label>Season chunein</label>
-          <select id="crop-season">
-            <option value="kharif">Kharif (Jun–Oct)</option>
-            <option value="rabi">Rabi (Nov–Mar)</option>
-            <option value="zaid">Zaid (Mar–Jun)</option>
-          </select>
-          <label>Soil type</label>
-          <select id="crop-soil">
-            <option value="alluvial">Alluvial (domat)</option>
-            <option value="clayey">Clayey (chikni matti)</option>
-            <option value="sandy">Sandy (balui)</option>
-          </select>
-          <button class="btn-primary" onclick="recommendCrops()">Fasal sujhaav dekhein</button>
-        </div>
-        <div class="col2 card">
-          <h3>Sujhaye gaye fasal</h3>
-          <div id="crop-result">
-            <div class="empty">Season aur soil select karke button dabayein</div>
-          </div>
-          <p style="font-size:11px;color:#8a8674;margin-top:8px;">Kisi bhi fasal pe click karke poori jaankari dekhein
-          </p>
-        </div>
+      <div class="col2 card">
+        <h3>सुझाई गई फसलें</h3>
+        <div id="crop-result"><div class="empty">मौसम और मिट्टी चुनकर बटन दबाएं</div></div>
+        <p style="font-size:11px;color:#8a8674;margin-top:8px;">किसी भी फसल पे क्लिक करके पूरी जानकारी देखें</p>
       </div>
-      <div class="card" id="crop-detail-panel" style="display:none;"></div>
     </div>
+    <div class="card" id="crop-detail-panel" style="display:none;"></div>
   </div>
+</div>
 
-  <script src="js/api.js"></script>
-  <script src="js/location.js"></script>
-  <script src="js/crop.js"></script>
-  <script>
-    requireAuth();
-    restoreLocationUI();
-  </script>
+<script src="js/api.js"></script>
+<script src="js/location.js"></script>
+<script src="js/crop.js"></script>
+<script>
+  requireAuth();
+  restoreLocationUI();
+  const currentUser = getUser();
+  if(currentUser && currentUser.role === 'admin'){
+    document.getElementById('admin-nav-link').style.display = 'block';
+  }
+</script>
 </body>
-
 </html>

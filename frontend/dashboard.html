@@ -1,111 +1,73 @@
 <!DOCTYPE html>
 <html lang="hi">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard — Kisan Mitra</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<title>डैशबोर्ड — किसान मित्र</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-  <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
 
-  <div class="sidebar">
-    <div class="brand">
-      <h1>Kisan Mitra</h1>
-      <div class="sub">Gorakhpur District</div>
-    </div>
-    <div class="user-chip">
-      <div class="name" id="user-name-display">—</div>
-      <div class="logout" onclick="doLogout()">Logout</div>
-    </div>
-    <ul class="navlist">
-      <li><a class="navitem active" href="dashboard.html">Dashboard</a></li>
-      <li><a class="navitem" href="mandi.html">Mandi Bhav</a></li>
-      <li><a class="navitem" href="weather.html">Mausam</a></li>
-      <li><a class="navitem" href="disease.html">Rog Pehchan</a></li>
-      <li><a class="navitem" href="finance.html">Kharch-Kamai</a></li>
-      <li><a class="navitem" href="crop.html">Fasal Sujhav</a></li>
-      <li id="admin-nav-link" style="display:none;"><a class="navitem" href="admin.html">⚙ Admin Panel</a></li>
-    </ul>
-    <div class="sidebar-foot">Connected to backend<br>http://localhost:5000</div>
+<div class="sidebar">
+  <div class="brand"><h1>किसान मित्र</h1><div class="sub">गोरखपुर जिला</div></div>
+  <div class="user-chip">
+    <div class="name" id="user-name-display">—</div>
+    <div class="logout" onclick="doLogout()">लॉगआउट</div>
+  </div>
+  <ul class="navlist">
+    <li><a class="navitem active" href="dashboard.html">डैशबोर्ड</a></li>
+    <li><a class="navitem" href="mandi.html">मंडी भाव</a></li>
+    <li><a class="navitem" href="weather.html">मौसम</a></li>
+    <li><a class="navitem" href="disease.html">रोग पहचान</a></li>
+    <li><a class="navitem" href="finance.html">खर्च-कमाई</a></li>
+    <li><a class="navitem" href="crop.html">फसल सुझाव</a></li>
+    <li><a class="navitem" href="profile.html">मेरी प्रोफाइल</a></li>
+    <li id="admin-nav-link" style="display:none;"><a class="navitem" href="admin.html">⚙ एडमिन पैनल</a></li>
+  </ul>
+  <div class="sidebar-foot">बैकएंड से जुड़ा है<br>http://localhost:5000</div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div><h2>डैशबोर्ड</h2><div class="page-sub">एक नज़र में सब कुछ</div></div>
+    <div class="loc-pill" id="loc-pill"><span class="dot"></span><span id="loc-text">स्थान का पता नहीं चला</span><button onclick="detectLocation()">📍 पता करें</button></div>
   </div>
 
-  <div class="main">
-    <div class="topbar">
-      <div>
-        <h2>Dashboard</h2>
-        <div class="page-sub">Ek nazar mein sab kuch</div>
+  <div class="content">
+    <div class="card" id="loc-summary-card" style="display:none;">
+      <h3>आपका क्षेत्र</h3>
+      <div class="loc-detail-grid">
+        <div><div class="k">आपका स्थान</div><div class="v" id="dash-village">—</div></div>
+        <div><div class="k">तहसील</div><div class="v" id="dash-tehsil">—</div></div>
+        <div><div class="k">नज़दीकी मंडी</div><div class="v" id="dash-mandi">—</div></div>
+        <div><div class="k">मिट्टी का प्रकार</div><div class="v" id="dash-soil">—</div></div>
       </div>
-      <div class="loc-pill" id="loc-pill"><span class="dot"></span><span id="loc-text">Location detect nahi
-          hui</span><button onclick="detectLocation()">📍 Detect</button></div>
     </div>
 
-    <div class="content">
-      <div class="card" id="loc-summary-card" style="display:none;">
-        <h3>Aapka area</h3>
-        <div class="loc-detail-grid">
-          <div>
-            <div class="k">Your Location</div>
-            <div class="v" id="dash-village">—</div>
-          </div>
-          <div>
-            <div class="k">Tehsil</div>
-            <div class="v" id="dash-tehsil">—</div>
-          </div>
-          <div>
-            <div class="k">Nearest mandi</div>
-            <div class="v" id="dash-mandi">—</div>
-          </div>
-          <div>
-            <div class="k">Soil type</div>
-            <div class="v" id="dash-soil">—</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="clearfix">
-        <a class="col3 card" style="display:block;cursor:pointer;" href="mandi.html">
-          <h3>Mandi Bhav</h3>
-          <p style="font-size:12px;color:#6b6656;">Sample rates dekhein</p>
-        </a>
-        <a class="col3 card" style="display:block;cursor:pointer;" href="weather.html">
-          <h3>Mausam</h3>
-          <p style="font-size:12px;color:#6b6656;">Live weather Gorakhpur ka</p>
-        </a>
-        <a class="col3 card" style="display:block;cursor:pointer;" href="finance.html">
-          <h3>Kharch-Kamai</h3>
-          <p style="font-size:12px;color:#6b6656;">Apna hisaab-kitab dekhein</p>
-        </a>
-      </div>
-      <div class="clearfix">
-        <a class="col2 card" style="display:block;cursor:pointer;" href="disease.html">
-          <h3>Rog Pehchan</h3>
-          <p style="font-size:13px;color:#5c5a4c;">Patte ki photo se disease check karein.</p>
-        </a>
-        <a class="col2 card" style="display:block;cursor:pointer;" href="crop.html">
-          <h3>Fasal Sujhav</h3>
-          <p style="font-size:13px;color:#5c5a4c;">Season/soil ke hisaab se sahi fasal jaanein.</p>
-        </a>
-      </div>
+    <div class="clearfix">
+      <a class="col3 card" style="display:block;cursor:pointer;" href="mandi.html"><h3>मंडी भाव</h3><p style="font-size:12px;color:#6b6656;">नमूना दरें देखें</p></a>
+      <a class="col3 card" style="display:block;cursor:pointer;" href="weather.html"><h3>मौसम</h3><p style="font-size:12px;color:#6b6656;">गोरखपुर का लाइव मौसम</p></a>
+      <a class="col3 card" style="display:block;cursor:pointer;" href="finance.html"><h3>खर्च-कमाई</h3><p style="font-size:12px;color:#6b6656;">अपना हिसाब-किताब देखें</p></a>
+    </div>
+    <div class="clearfix">
+      <a class="col2 card" style="display:block;cursor:pointer;" href="disease.html"><h3>रोग पहचान</h3><p style="font-size:13px;color:#5c5a4c;">पत्ते की फोटो से रोग जांचें।</p></a>
+      <a class="col2 card" style="display:block;cursor:pointer;" href="crop.html"><h3>फसल सुझाव</h3><p style="font-size:13px;color:#5c5a4c;">मौसम/मिट्टी के अनुसार सही फसल जानें।</p></a>
     </div>
   </div>
+</div>
 
-  <script src="js/api.js"></script>
-  <script src="js/location.js"></script>
-  <script>
-    requireAuth();
-    restoreLocationUI();
-    const currentUser = getUser();
-    if (currentUser && currentUser.role === 'admin') {
-      document.getElementById('admin-nav-link').style.display = 'block';
-    }
-  </script>
+<script src="js/api.js"></script>
+<script src="js/location.js"></script>
+<script>
+  requireAuth();
+  restoreLocationUI();
+  const currentUser = getUser();
+  if(currentUser && currentUser.role === 'admin'){
+    document.getElementById('admin-nav-link').style.display = 'block';
+  }
+</script>
 </body>
-
 </html>

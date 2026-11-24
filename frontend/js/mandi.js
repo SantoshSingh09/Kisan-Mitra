@@ -32,6 +32,6 @@ function renderMandi(){
   Object.keys(mandiData).forEach(id=>{
     const el = document.getElementById(id);
     if(!el) return;
-    el.innerHTML = mandiData[id].map(r=>`<tr><td>${r[0]}</td><td class="range">₹${r[1]}</td></tr>`).join('');
+    el.innerHTML = mandiData[id].map(r=>`<tr><td>${hiCrop(r[0])}</td><td class="range">₹${r[1]}</td></tr>`).join('');
   });
 }

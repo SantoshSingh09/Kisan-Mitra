@@ -1,79 +1,72 @@
 <!DOCTYPE html>
 <html lang="hi">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Mausam — Kisan Mitra</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<title>मौसम — किसान मित्र</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-  <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
 
-  <div class="sidebar">
-    <div class="brand">
-      <h1>Kisan Mitra</h1>
-      <div class="sub">Gorakhpur District</div>
-    </div>
-    <div class="user-chip">
-      <div class="name" id="user-name-display">—</div>
-      <div class="logout" onclick="doLogout()">Logout</div>
-    </div>
-    <ul class="navlist">
-      <li><a class="navitem" href="dashboard.html">Dashboard</a></li>
-      <li><a class="navitem" href="mandi.html">Mandi Bhav</a></li>
-      <li><a class="navitem active" href="weather.html">Mausam</a></li>
-      <li><a class="navitem" href="disease.html">Rog Pehchan</a></li>
-      <li><a class="navitem" href="finance.html">Kharch-Kamai</a></li>
-      <li><a class="navitem" href="crop.html">Fasal Sujhav</a></li>
-    </ul>
-    <div class="sidebar-foot">Connected to backend<br>http://localhost:5000</div>
+<div class="sidebar">
+  <div class="brand"><h1>किसान मित्र</h1><div class="sub">गोरखपुर जिला</div></div>
+  <div class="user-chip">
+    <div class="name" id="user-name-display">—</div>
+    <div class="logout" onclick="doLogout()">लॉगआउट</div>
+  </div>
+  <ul class="navlist">
+    <li><a class="navitem" href="dashboard.html">डैशबोर्ड</a></li>
+    <li><a class="navitem" href="mandi.html">मंडी भाव</a></li>
+    <li><a class="navitem active" href="weather.html">मौसम</a></li>
+    <li><a class="navitem" href="disease.html">रोग पहचान</a></li>
+    <li><a class="navitem" href="finance.html">खर्च-कमाई</a></li>
+    <li><a class="navitem" href="crop.html">फसल सुझाव</a></li>
+    <li><a class="navitem" href="profile.html">मेरी प्रोफाइल</a></li>
+    <li id="admin-nav-link" style="display:none;"><a class="navitem" href="admin.html">⚙ एडमिन पैनल</a></li>
+  </ul>
+  <div class="sidebar-foot">बैकएंड से जुड़ा है<br>http://localhost:5000</div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div><h2>मौसम</h2><div class="page-sub">लाइव मौसम सलाह</div></div>
+    <div class="loc-pill" id="loc-pill"><span class="dot"></span><span id="loc-text">स्थान का पता नहीं चला</span><button onclick="detectLocation()">📍 पता करें</button></div>
   </div>
 
-  <div class="main">
-    <div class="topbar">
-      <div>
-        <h2>Mausam</h2>
-        <div class="page-sub">Live weather advisory</div>
-      </div>
-      <div class="loc-pill" id="loc-pill"><span class="dot"></span><span id="loc-text">Location detect nahi
-          hui</span><button onclick="detectLocation()">📍 Detect</button></div>
-    </div>
-
-    <div class="content">
-      <span class="live-flag">Live data — OpenWeatherMap se</span>
-      <div class="card" style="max-width:520px;">
-        <div id="weather-loading" class="spinner" style="display:block;">Weather load ho raha hai...</div>
-        <div id="weather-content" style="display:none;">
-          <div class="weather-hero">
-            <div class="temp" id="w-temp">—°</div>
-            <div class="desc" id="w-desc">—</div>
-          </div>
-          <div class="weather-meta">
-            <span>Feels like: <b id="w-feels">—</b></span>
-            <span>Humidity: <b id="w-humidity">—</b></span>
-            <span>Wind: <b id="w-wind">—</b></span>
-          </div>
-          <div class="advisory-box">🌾 General tip: Agar humidity 70% se zyada ho aur baarish ki sambhavna ho, to
-            spray/chidkav ka kaam agle saaf din tak taal dein.</div>
+  <div class="content">
+    <span class="live-flag">लाइव डेटा — OpenWeatherMap से</span>
+    <div class="card" style="max-width:520px;">
+      <div id="weather-loading" class="spinner" style="display:block;">मौसम लोड हो रहा है...</div>
+      <div id="weather-content" style="display:none;">
+        <div class="weather-hero">
+          <div class="temp" id="w-temp">—°</div>
+          <div class="desc" id="w-desc">—</div>
         </div>
+        <div class="weather-meta">
+          <span>महसूस हो रहा है: <b id="w-feels">—</b></span>
+          <span>नमी: <b id="w-humidity">—</b></span>
+          <span>हवा: <b id="w-wind">—</b></span>
+        </div>
+        <div class="advisory-box">🌾 सुझाव: अगर नमी 70% से ज़्यादा हो और बारिश की संभावना हो, तो छिड़काव अगले साफ़ दिन तक टालें।</div>
       </div>
     </div>
   </div>
+</div>
 
-  <script src="js/api.js"></script>
-  <script src="js/location.js"></script>
-  <script src="js/weather.js"></script>
+<script src="js/api.js"></script>
+<script src="js/location.js"></script>
+<script src="js/weather.js"></script>
 <script>
   requireAuth();
   restoreLocationUI();
   loadWeather();
+  const currentUser = getUser();
+  if(currentUser && currentUser.role === 'admin'){
+    document.getElementById('admin-nav-link').style.display = 'block';
+  }
 </script>
 </body>
-
 </html>

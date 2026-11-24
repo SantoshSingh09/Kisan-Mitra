@@ -3,10 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Signup — Kisan Mitra</title>
+  <title>साइन अप — किसान मित्र</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -16,29 +16,32 @@
   <div class="auth-page">
     <div>
       <div class="auth-box">
-        <h1>Naya Account</h1>
-        <div class="sub">Kisan Mitra join karein</div>
+        <h1>नया खाता</h1>
+        <div class="sub">किसान मित्र से जुड़ें</div>
         <div class="auth-error" id="auth-error"></div>
 
-        <label>Full name</label>
-        <input type="text" id="signup-name" placeholder="Ramesh Kumar">
-        <label>Phone number</label>
+        <label>पूरा नाम</label>
+        <input type="text" id="signup-name" placeholder="रमेश कुमार">
+        <label>फ़ोन नंबर</label>
         <input type="tel" id="signup-phone" placeholder="9876543210">
-        <label>Password</label>
-        <input type="password" id="signup-password" placeholder="At least 6 characters">
-        <label>Region</label>
-        <input type="text" id="signup-region" value="Gorakhpur">
-        <button class="btn-primary" onclick="doSignup()">Create account</button>
+        <label>पासवर्ड</label>
+        <input type="password" id="signup-password" placeholder="कम से कम 6 अक्षर">
+        < <label>जिला</label>
+          <select id="signup-district"></select>
+          <label>ब्लॉक</label>
+          <select id="signup-block" disabled></select>
+          <button class="btn-primary" onclick="doSignup()">खाता बनाएं</button>
 
-        <div class="auth-switch">Pehle se account hai? <a href="login.html">Login karein</a></div>
-        <div class="auth-status" id="auth-status">Backend must be running at localhost:5000</div>
+          <div class="auth-switch">पहले से खाता है? <a href="login.html">लॉगिन करें</a></div>
+          <div class="auth-status" id="auth-status">बैकएंड localhost:5000 पर चलना चाहिए</div>
       </div>
-      <div style="text-align:center;"><a href="home.html" class="auth-back">← Home par wapas jayein</a></div>
+      <div style="text-align:center;"><a href="index.html" class="auth-back">← होम पर वापस जाएं</a></div>
     </div>
   </div>
 
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
+  <script>setupDistrictBlock(document.getElementById('signup-district'), document.getElementById('signup-block'));</script>
 </body>
 
 </html>

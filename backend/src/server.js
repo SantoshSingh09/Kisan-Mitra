@@ -15,7 +15,7 @@ const profileRoutes = require('./routes/profileRoutes');
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use((req, res, next) => req.path === '/api/disease/detect' ? next() : express.json()(req, res, next));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/finance', financeRoutes);

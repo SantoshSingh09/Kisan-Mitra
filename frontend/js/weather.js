@@ -7,14 +7,14 @@ async function loadWeather(){
   try{
     const res = await fetch(`${API_BASE}/weather/current`);
     const data = await res.json();
-    if(!res.ok){ throw new Error(data.message || 'Weather fetch failed'); }
+    if(!res.ok){ throw new Error(hiMsg(data.message)); }
     document.getElementById('w-temp').textContent = Math.round(data.temperature)+'°';
     document.getElementById('w-desc').textContent = data.description;
     document.getElementById('w-feels').textContent = Math.round(data.feelsLike)+'°C';
     document.getElementById('w-humidity').textContent = data.humidity+'%';
-    document.getElementById('w-wind').textContent = data.windSpeed+' m/s';
+    document.getElementById('w-wind').textContent = data.windSpeed+' मी/से';
     loading.style.display='none'; content.style.display='block';
   }catch(err){
-    loading.textContent = 'Weather load nahi ho paya — backend/API key check karein.';
+    loading.textContent = 'मौसम की जानकारी नहीं मिल पाई — कृपया थोड़ी देर बाद कोशिश करें।';
   }
 }

@@ -1,15 +1,15 @@
 const db = require('../config/db');
 
 function getUserById(userId, callback) {
-  const sql = `SELECT id, name, phone, region, role, created_at FROM users WHERE id = ?`;
+  const sql = `SELECT id, name, phone, region, block, role, created_at FROM users WHERE id = ?`;
   db.get(sql, [userId], (err, row) => {
     callback(err, row);
   });
 }
 
-function updateProfile(userId, name, region, callback) {
-  const sql = `UPDATE users SET name = ?, region = ? WHERE id = ?`;
-  db.run(sql, [name, region, userId], function (err) {
+function updateProfile(userId, name, region, block, callback) {
+  const sql = `UPDATE users SET name = ?, region = ?, block = ? WHERE id = ?`;
+  db.run(sql, [name, region, block, userId], function (err) {
     callback(err, this ? this.changes : 0);
   });
 }
